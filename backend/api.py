@@ -17,37 +17,14 @@ included_fields = [
     "InvoiceDate",
     "CashDate",
     "CashPercent",
-    "PaymentTermCode",
     "CashSum",
-    "GrossSum",
     "CurrencyCode",
-    "GrossSumComp",
     "ReferencePerson",
-    "PaymentPlanReference",
     "OrderNumber",
-    "VoucherNumber1",
-    "VoucherNumber2",
-    "ReleaseBatchId",
-    "DeliveryNote",
     "Id",
     "Status",
     "CompanyName",
-    "OrganizationElementId",
-    "DueDate",
-    "DiscountStatus",
-    "LastPaymentRunDate",
-    "AdministrativeSiteId",
-    "NetSum",
-    "CompanyId",
-    "Difference",
-    "Disputed",
-    "Confidential",
-    "ExceptionReasonValue",
-    "DiscountCount",
-    "EntityConfigId",
-    "NetSumDifference",
-    "GrossSumDifference",
-    "TaxSumDifference",
+    "CompanyId"
 ]
 
 
@@ -66,7 +43,7 @@ def search_documents():
         "query": {
             "multi_match": {
                 "query": request.json["query"],
-                "fields": ["InvoiceNumberReverse", "InvoiceNumber", "SupplierName"],
+                "fields": ["InvoiceNumberReverse", "InvoiceNumber", "SupplierName", "CompanyName", "SupplierName"],
                 "type": "phrase_prefix",
             }
         },

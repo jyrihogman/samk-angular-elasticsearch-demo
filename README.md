@@ -1,6 +1,6 @@
-# Search engine application demo for SAMK
+## Search engine application demo for SAMK
 
-# Stack
+### Stack
 - Angular
 - Python
 - Elasticsearch

@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from elasticsearch import Elasticsearch
+from flask_cors import CORS
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 es = Elasticsearch("http://localhost:9200")
 included_fields = [
@@ -24,17 +26,14 @@ included_fields = [
     "Id",
     "Status",
     "CompanyName",
-    "CompanyId"
+    "CompanyId",
 ]
-
-
-@app.route("/")
-def hello_world():
-    return "Hello, World!"
 
 
 @app.route("/search", methods=["POST"])
 def search_documents():
+    print(request.json)
+    print(request.form)
     print(request.json["query"])
 
     body = {
@@ -43,7 +42,12 @@ def search_documents():
         "query": {
             "multi_match": {
                 "query": request.json["query"],
-                "fields": ["InvoiceNumberReverse", "InvoiceNumber", "SupplierName", "CompanyName", "SupplierName"],
+                "fields": [
+                    "InvoiceNumberReverse",
+                    "InvoiceNumber",
+                    "SupplierName",
+                    "CompanyName",
+                ],
                 "type": "phrase_prefix",
             }
         },

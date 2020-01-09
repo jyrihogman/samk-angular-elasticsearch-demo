@@ -9,7 +9,7 @@ import { SearchFormService } from "./search-form.service";
   styleUrls: ["./search-form.component.css"]
 })
 export class SearchFormComponent {
-  searchText: string = "";
+  searchText = "";
   @Output() searched = new EventEmitter<{}>();
 
   constructor(private searchFormService: SearchFormService) {}
@@ -18,9 +18,10 @@ export class SearchFormComponent {
     this.searchText = searchText;
   }
 
-  performSearch(event: any): void {
+  performSearch(): void {
+    console.log(this.searchText);
     this.searchFormService
-      .getDocuments(event)
+      .getDocuments(this.searchText)
       .subscribe(h => this.searched.emit(h));
   }
 }

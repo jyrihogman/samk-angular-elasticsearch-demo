@@ -1,10 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 @Component({
   selector: "search-results-component",
-  templateUrl: "./search-results.component.html",
-  styleUrls: ["./search-results.component.css"]
+  templateUrl: "./search-results.component.html"
 })
 export class SearchResultsComponent {
-  searchResults;
+  @Input() searchResults = {};
 }

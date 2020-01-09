@@ -7,36 +7,17 @@ app = Flask(__name__)
 CORS(app)
 
 es = Elasticsearch("http://localhost:9200")
-included_fields = [
-    "CreationTime",
-    "OrganizationElementCode",
-    "OrganizationElementName",
-    "SecondaryStatus",
-    "InvoiceTypeName",
-    "SupplierCode",
-    "SupplierName",
-    "InvoiceNumber",
-    "InvoiceDate",
-    "CashDate",
-    "CashPercent",
-    "CashSum",
-    "CurrencyCode",
-    "ReferencePerson",
-    "OrderNumber",
-    "Id",
-    "Status",
-    "CompanyName",
-    "CompanyId",
-]
+included_fields = ["SupplierName", "InvoiceNumber"]
 
 
 @app.route("/search", methods=["POST"])
 def search_documents():
-    print(request.json)
-    print(request.form)
-    print(request.json["query"])
+    response = es.search(index="tenant1", body=get_query_body(request))
+    return jsonify([hit["_source"] for hit in response["hits"]["hits"]])
 
-    body = {
+
+def get_query_body(request):
+    return {
         "size": 5000,
         "_source": {"includes": included_fields},
         "query": {
@@ -48,15 +29,10 @@ def search_documents():
                     "SupplierName",
                     "CompanyName",
                 ],
-                "type": "phrase_prefix",
+                "type": "best_fields",
             }
         },
     }
 
-    response = es.search(index="tenant1", body=body, filter_path=["hits.hits._source"])
 
-    return jsonify([hit["_source"] for hit in response["hits"]["hits"]])
-
-
-if __name__ == "__main__":
-    app.run()
+app.run()
